@@ -100,6 +100,52 @@ Unity 프로젝트를 Git으로 관리하며, `.gitignore`를 활용해 불필�
   - `.sln`, `.csproj` 등 빌드 시 자동 생성 파일  
   - OS, IDE별 임시 파일 (예: `.DS_Store`, `.idea/`)
 
+- **.gitignore 초기 설정 방법**  
+  - Unity 프로젝트 폴더에서 `.gitignore` 파일을 생성 (새로만들기 > 텍스트파일)
+  - 아래 내용을 복사해 `.gitignore`에 붙여넣기:  
+    ```여기서부터
+    [Ll]ibrary/
+    [Tt]emp/
+    [Bb]uild/
+    [Oo]bj/
+    [Bb]in/
+    [Uu]ser[Ss]ettings/
+    *.csproj
+    *.unityproj
+    *.sln
+    *.suo
+    *.tmp
+    *.user
+    *.userprefs
+    *.pidb
+    *.booproj
+    *.svd
+    *.pdb
+    *.mdb
+    *.opendb
+    *.VC.db
+    *.pidb.meta
+
+    # OS generated files
+    .DS_Store
+    *.swp
+    *.swo
+    *.tmp
+    ehthumbs.db
+    Icon?
+    Thumbs.db
+
+    # Rider
+    .idea/
+    *.sln.iml
+    ```여기까지
+  - Git에 반영:  
+    ```bash
+    git add .gitignore
+    git commit -m "Add .gitignore for Unity project"
+    git push
+    ```
+
 - **Git 명령어**  
   - 변경사항을 Git에 추가:  
     ```bash
