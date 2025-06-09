@@ -70,8 +70,8 @@
 ## 저장소
 
 - [프로젝트 GitHub 저장소](https://github.com/luckjun0910/Unity)
-- [프로젝트가 진행되고 있는 저장소](석준이집)
-- [프로젝트가 돌아다니는 저장소](석준이USB)
+- 프로젝트가 진행되고 있는 저장소 : SeokJun HOME
+- 프로젝트가 돌아다니는 저장소 : SeokJun USB
 
 ---
 
