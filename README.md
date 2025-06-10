@@ -3,7 +3,7 @@
 **카테고리:** 쾌적한 환경에서의 훈련  
 **팀:** 홍석준  
 **기간:** 2025년 5월 - 2025년 6월  
-**사용 기술:** Unity 2022.3.62f1, VR (Meta/Oculus), C#
+**사용 기술:** Unity, VR, XR, C#, META
 
 ---
 
@@ -40,9 +40,9 @@
 
 ## 개발 환경 및 요구사항
 
-- Unity 버전: 2022.3.62f1  
-- VR 디바이스: Meta Quest 2 (오큘러스)  
-- 플랫폼: Meta Quest / Windows PC (Link Cable)  
+- Unity 버전: 2022.3.62f1
+- VR 디바이스: Meta Quest 2 (오큘러스)
+- 플랫폼: Meta Quest / Windows PC (Link Cable)
 - XR Plugin: Oculus Integration (Unity Asset Store)
 
 ---
