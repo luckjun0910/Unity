@@ -7,8 +7,12 @@ public class GunController : MonoBehaviour
 {
     [Header("Shooting")]
     public Transform shootPoint; // 총구 위치
-    public float shootRange = 100f;
+    public float shootRange = 100f; // 총알이 날아가는 최대 거리
     public LayerMask hitLayer; // 적만 맞게 LayerMask
+
+    [Header("Fire Rete Settings")]
+    public float fireRate = 0.5f; //발사 간격
+    private float nextFireTime = 0f; //다음 발사가 가능한 시간
 
 
     [Header("Ammo Settings")] //일케하면 Inspector에서 보기 편하게 바꿀수 있음
@@ -31,12 +35,25 @@ public class GunController : MonoBehaviour
         else
             Debug.Log("AmmoText 못찾고 잇음");
 
-        //재장전 ui text 찾기
-        var reloadobj = GameObject.Find("ReloadText");
-        if (reloadobj != null)
-            reloadText = reloadobj.GetComponent<Text>();
+        // ReloadText는 비활성화 상태일 수 있으므로 Canvas에서 transform.Find로 찾기
+        GameObject canvasObj = GameObject.Find("Canvas"); // Canvas를 찾는다
+        if (canvasObj != null)
+        {
+            // Canvas의 transform에서 자식 ReloadText를 찾는다 (비활성화 상태여도 찾음)
+            Transform reloadTransform = canvasObj.transform.Find("ReloadText");
+            if (reloadTransform != null)
+            {
+                reloadText = reloadTransform.GetComponent<Text>();
+            }
+            else
+            {
+                Debug.Log("ReloadText를 Canvas에서 못찾음");
+            }
+        }
         else
-            Debug.Log("ReloadText 못찾고 있음");
+        {
+            Debug.Log("Canvas를 못찾음");
+        }
 
     }
 
@@ -45,12 +62,6 @@ public class GunController : MonoBehaviour
         //탄약 초기화
         currentAmmo = maxAmmo;
         UpdateAmmoUI();
-
-        if (reloadText != null)
-            reloadText.gameObject.SetActive(false); //처음에는 비활성화
-        else
-            Debug.Log("reloadTet를 찾을 수 없습니다.");
-
     }
 
     private void Update()
@@ -70,32 +81,39 @@ public class GunController : MonoBehaviour
         if (isReloading)
             return;  // 장전 중엔 발사 금지
 
-        // 트리거 누르면 발사
-        if (isTriggerPressed)
+        // 발사 딜레이를 검사해서 발사가능 시간일 때만 발사
+        if (isTriggerPressed && Time.time >= nextFireTime)
         {
             Shoot();
+            nextFireTime = Time.time + fireRate; //다음 발사 가능시간 갱신
         }
     }
 
     public void Shoot()
     {
-        if (!canShoot) return;
-
+        if (!canShoot || isReloading ||currentAmmo <=0) return;
+        /*
         // if (currentAmmo <= 0)
         // {
         //     Debug.Log("탄약 없음");
         // }
 
 
-        // Debug.Log($"[레이] 시작:{shootPoint.position} 방향:{shootPoint.forward} 레이어마스크:{hitLayer.value}");
+        // Debug.Log($"[레이] 시작:{shootPoint.position} 방향:{shootPoint.forward} 레이어마스크:{hitLayer.value}");*/
+
         // 레이 방향 시각화 (디버그 용)
         Debug.DrawRay(shootPoint.position, shootPoint.forward * shootRange, Color.red, 1f);
         Debug.Log("발사됨!");  // 확인용
+
         Ray ray = new Ray(shootPoint.position, shootPoint.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, shootRange, hitLayer))
+        //모든 충돌체 검사
+        if (Physics.Raycast(ray, out RaycastHit hit, shootRange))
         {
             Debug.Log("맞춘 대상: " + hit.collider.gameObject.name);
-            Destroy(hit.collider.gameObject);// 맞춘 오브젝트 제거
+            
+            // 맞춘 대상이 적 레이어인지 검사하고 적만 제거하기
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                Destroy(hit.collider.gameObject);// 맞춘 오브젝트 제거
         }
         else
         {
@@ -109,17 +127,23 @@ public class GunController : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
+
+        //재장전 시작시 장탄수 순기기
+        if (ammoText != null)
+            ammoText.gameObject.SetActive(false);
+        
+
         if (reloadText != null)
         {
             reloadText.gameObject.SetActive(true);
             float t = reloadDuration;
             while (t > 0f)
             {
-                reloadText.text = $"Reloading... {t:F1}s";
+                reloadText.text = $"재장전 중... {t:F1}s";
                 t -= Time.deltaTime;
                 yield return null;
             }
-            reloadText.text = "Reloading... 0.0s";
+            reloadText.text = "재장전 중... 0.0s";
         }
 
         yield return new WaitForSeconds(0.1f); // 화면에 “0.0s”가 보이게 잠깐 대기
@@ -127,8 +151,15 @@ public class GunController : MonoBehaviour
         currentAmmo = maxAmmo;
         UpdateAmmoUI();
 
+        //재장전이 끝나면 다시 장탄수 보이게
+        if (ammoText != null)
+            ammoText.gameObject.SetActive(true);
+        
+        
+
         if (reloadText != null)
             reloadText.gameObject.SetActive(false);
+
 
         isReloading = false;
     }
