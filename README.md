@@ -43,7 +43,8 @@
 - Unity 버전: 2022.3.62f1
 - VR 디바이스: Meta Quest 2 (오큘러스)
 - 플랫폼: Meta Quest / Windows PC (Link Cable)
-- XR Plugin: Oculus Integration (Unity Asset Store)
+- [Meta XR All-in-One SDK](https://assetstore.unity.com/packages/tools/integration/meta-xr-all-in-one-sdk-269657)
+- Unity XR Interaction ToolKit
 
 ---
 
