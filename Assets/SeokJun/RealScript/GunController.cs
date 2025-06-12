@@ -26,6 +26,12 @@ public class GunController : MonoBehaviour
     private bool isReloading = false; //장전중인지 여부
     private Text reloadText; //장전 ui
 
+    [Header("Bullet Settings")]
+    public GameObject bulletPrefab; // 총알 연결하셈
+    public float bulletSpeed = 50f; //총알 속도
+
+
+
 
     void Awake()
     {
@@ -101,6 +107,7 @@ public class GunController : MonoBehaviour
 
         // Debug.Log($"[레이] 시작:{shootPoint.position} 방향:{shootPoint.forward} 레이어마스크:{hitLayer.value}");*/
 
+        /* //레이로 발사 할때때
         // 레이 방향 시각화 (디버그 용)
         Debug.DrawRay(shootPoint.position, shootPoint.forward * shootRange, Color.red, 1f);
         Debug.Log("발사됨!");  // 확인용
@@ -118,7 +125,11 @@ public class GunController : MonoBehaviour
         else
         {
             Debug.Log("빗나감");
-        }
+        } */
+
+        GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
+
+        
 
         currentAmmo--;
         UpdateAmmoUI();

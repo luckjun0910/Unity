@@ -69,10 +69,12 @@
     <Compile Include="Assets\TestScript\XRDeviceCheck.cs" />
     <Compile Include="Assets\SeokJun\RealScript\SpawnManager.cs" />
     <Compile Include="Assets\SeokJun\RealScript\GunController.cs" />
+    <Compile Include="Assets\SeokJun\RealScript\GameManager.cs" />
     <Compile Include="Assets\SeokJun\RealScript\InteractorSwitcher.cs" />
     <Compile Include="Assets\SeokJun\RealScript\FollowCamera.cs" />
     <Compile Include="Assets\TestScript\GrabbedObjectController.cs" />
     <Compile Include="Assets\TestScript\RayGrabManiger.cs" />
+    <Compile Include="Assets\SeokJun\RealScript\Bullet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Abandoned World\Wood Box Free\Shaders\SH_AW_PBR_ORM.shader" />
