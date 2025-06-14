@@ -10,6 +10,7 @@ public class BuildTimer : MonoBehaviour
 {
     //1분 동안 오브젝트 설치 시간 1분 (초단위임
     public float bulidTime = 60f;
+    public GameObject leftRayInteractor;
 
     [Header("UI")]
     //타이버를 표시할 UI 넣기 
@@ -87,6 +88,14 @@ public class BuildTimer : MonoBehaviour
 
         if (AmmoText != null)
             AmmoText.gameObject.SetActive(true);
+        
+        if (leftRayInteractor != null)
+        {
+            leftRayInteractor.SetActive(false);
+            Debug.Log("왼손 Ray Interactor 비활성화 완료");
+        }
+
+
 
         // 총을 손에 생성
         Transform hand = GameObject.Find("Right Controller/Attach").transform;

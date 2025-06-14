@@ -663,7 +663,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354bcfc7160687b46963a11fb17e634c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulidTime: 15
+  bulidTime: 20
+  leftRayInteractor: {fileID: 604614219}
   timerText: {fileID: 1209285767}
   AmmoText: {fileID: 0}
   gunPrefab: {fileID: 3627867176493981672, guid: b2aa6b06e5534924f8ecd875dff819c8, type: 3}
