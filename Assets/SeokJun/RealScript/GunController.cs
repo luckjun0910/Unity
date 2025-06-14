@@ -128,6 +128,13 @@ public class GunController : MonoBehaviour
         } */
 
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
+        
+        // Bullet 스크립트에 속도 적용
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        if (bulletScript != null)
+        {
+            bulletScript.speed = bulletSpeed;
+        }
 
         
 

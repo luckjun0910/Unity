@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,6 +18,8 @@ public class EnemyController : MonoBehaviour
 
     // NavMeshAgent: 목적지까지 이동 경로를 찾는 컴포넌트
     private NavMeshAgent agent;
+
+    public float SaveTime = 7f;
 
     // Start()는 게임 시작 시 한 번 호출됨
     void Start()
@@ -61,25 +64,64 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    System.Collections.IEnumerator SurvivalCountdown()
+    // 플레이어가 적 시야에 보이는지 확인하는 함수
+    bool IsPlayerVisible()
     {
-        float timer = 7f;
+        Transform playerHead = Camera.main.transform; // 플레이어 카메라 위치
+
+        Vector3 dirToPlayer = (playerHead.position - transform.position).normalized;
+
+        // 적이 플레이어 방향으로 raycast 날림
+        if (Physics.Raycast(transform.position, dirToPlayer, out RaycastHit hit, 100f))
+        {
+            // 충돌한 대상이 플레이어면 시야에 있음
+            return hit.collider.CompareTag("MainCamera"); // 또는 "Player"
+        }
+
+        // 충돌이 플레이어가 아니면 안보이게 (아무것도 안함)
+        return false;
+    }
+
+
+    //적이 도착 후 7초 생존시 패배를 엄폐 상태에서는 시간 초기화
+    IEnumerator SurvivalCountdown()
+    {
+        float timer = SaveTime;
+        Debug.Log($"[Enemy:{gameObject.name}] 목적지 도달 → 생존 카운트 시작");
 
         while (timer > 0f)
         {
-            //적이 죽었으면 즉시종료
-            if (isDead) yield break;
+            if (isDead)
+            {
+                Debug.Log($"[Enemy:{gameObject.name}] 중간에 사망 → 생존 카운트 중단");
+                yield break;
+            }
+            if (!IsPlayerVisible())
+            {
+                timer = SaveTime;
+                Debug.Log($"[Enemy:{gameObject.name}] 플레이어 안 보임 → 타이머 초기화");
+            }
+            else
+            {
+                timer -= Time.deltaTime;
+            }
 
-            timer -= Time.deltaTime;
+            
             yield return null;
         }
 
-        //살아남은 경우 -> 패배
-        if (gameManager != null)
+        if (GameManager.Instance == null)
         {
-            gameManager.NotifyEnemySurvived();
+            Debug.LogError("[Enemy] GameManager.Instance is STILL null after 7s");
+        }
+        else
+        {
+            Debug.Log("[Enemy] GameManager.Instance 유효 → Notify 호출 시도");
+            GameManager.Instance.NotifyEnemySurvived();
         }
     }
+
+
 
     public void Die()
     {

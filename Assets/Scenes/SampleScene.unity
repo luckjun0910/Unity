@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 4220496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.08176478, z: -0, w: 0.9966517}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -643,6 +643,7 @@ GameObject:
   - component: {fileID: 213821218}
   - component: {fileID: 213821217}
   - component: {fileID: 213821219}
+  - component: {fileID: 213821220}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -662,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354bcfc7160687b46963a11fb17e634c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulidTime: 10
+  bulidTime: 15
   timerText: {fileID: 1209285767}
   AmmoText: {fileID: 0}
   gunPrefab: {fileID: 3627867176493981672, guid: b2aa6b06e5534924f8ecd875dff819c8, type: 3}
@@ -715,6 +716,18 @@ MonoBehaviour:
   - {fileID: 1954520716}
   maxEnemies: 15
   spawnInterval: 2
+--- !u!114 &213821220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213821216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5f7c7e5fd7ac9408c7a87379cbc50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &282629814
 GameObject:
   m_ObjectHideFlags: 0
