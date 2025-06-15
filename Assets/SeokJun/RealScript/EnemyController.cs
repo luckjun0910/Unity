@@ -63,24 +63,62 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
+    /*
+        // 플레이어가 적 시야에 보이는지 확인하는 함수
+        bool IsPlayerVisible()
+        {
+            Transform playerHead = Camera.main.transform; // 플레이어 카메라 위치
 
-    // 플레이어가 적 시야에 보이는지 확인하는 함수
+            Vector3 dirToPlayer = (playerHead.position - transform.position).normalized;
+
+
+            // Enemy 레이어는 무시하고 Ray 발사
+            int layerMask = ~(1 << LayerMask.NameToLayer("Enemy"));
+            //위에서 ray쏘기
+            Vector3 origin = transform.position + Vector3.up * 1.6f;
+
+            // 적이 플레이어 방향으로 raycast 날림
+            if (Physics.Raycast(origin, dirToPlayer, out RaycastHit hit, 100f, layerMask))
+            {
+                // ray 쏘는거 화긴용
+                Debug.DrawRay(origin, dirToPlayer * 100f, Color.green, 0.5f);
+                // 충돌한 대상이 플레이어면 시야에 있음
+                return hit.collider.CompareTag("MainCamera"); // 또는 "Player"
+            }
+
+            // 충돌이 플레이어가 아니면 안보이게 (아무것도 안함)
+            return false;
+        }
+    */
+
     bool IsPlayerVisible()
     {
-        Transform playerHead = Camera.main.transform; // 플레이어 카메라 위치
+        Transform playerHead = Camera.main.transform;
 
-        Vector3 dirToPlayer = (playerHead.position - transform.position).normalized;
+        Vector3 origin = transform.position + Vector3.up * 1.6f;
+        Vector3 dirToPlayer = (playerHead.position - origin).normalized;
 
-        // 적이 플레이어 방향으로 raycast 날림
-        if (Physics.Raycast(transform.position, dirToPlayer, out RaycastHit hit, 100f))
+        // 시야각 제한: 정면 120도 (90도 좌우)
+        float angle = Vector3.Angle(transform.forward, dirToPlayer);
+        if (angle > 90f)
         {
-            // 충돌한 대상이 플레이어면 시야에 있음
-            return hit.collider.CompareTag("MainCamera"); // 또는 "Player"
+            Debug.Log("[Enemy] 플레이어 시야각 바깥 → false");
+            return false;
         }
 
-        // 충돌이 플레이어가 아니면 안보이게 (아무것도 안함)
+        // 레이어 마스크: Enemy 제외
+        int layerMask = ~(1 << LayerMask.NameToLayer("Enemy"));
+
+        if (Physics.Raycast(origin, dirToPlayer, out RaycastHit hit, 100f, layerMask))
+        {
+            Debug.DrawRay(origin, dirToPlayer * 100f, Color.green, 0.5f);
+            return hit.collider.CompareTag("MainCamera");
+        }
+
         return false;
     }
+
+
 
 
     //적이 도착 후 7초 생존시 패배를 엄폐 상태에서는 시간 초기화
@@ -106,7 +144,7 @@ public class EnemyController : MonoBehaviour
                 timer -= Time.deltaTime;
             }
 
-            
+
             yield return null;
         }
 
@@ -138,11 +176,13 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Bullet"))
-        {
-            Die();
-        }
-    }
+    
+    // 총알 일때 썻던거
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.CompareTag("Bullet"))
+    //     {
+    //         Die();
+    //     }
+    // }
 }

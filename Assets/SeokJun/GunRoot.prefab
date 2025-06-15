@@ -46,15 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootPoint: {fileID: 4641638365345622911}
-  shootRange: 100
+  shootDistance: 100
   hitLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 136
   fireRate: 0.5
   maxAmmo: 30
   reloadDuration: 3
-  bulletPrefab: {fileID: 2815748643960578701, guid: 3f192a15f51d5d14c988ff8b8e8eaba8, type: 3}
-  bulletSpeed: 100
 --- !u!1001 &4586859941584474275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -106,6 +104,18 @@ PrefabInstance:
     - target: {fileID: 8398728607711439219, guid: 7534b945c79b9ea45aace1d5e1c301cc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9209198579193527260, guid: 7534b945c79b9ea45aace1d5e1c301cc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9209198579193527260, guid: 7534b945c79b9ea45aace1d5e1c301cc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9209198579193527260, guid: 7534b945c79b9ea45aace1d5e1c301cc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.545
       objectReference: {fileID: 0}
     - target: {fileID: 9209198579193527260, guid: 7534b945c79b9ea45aace1d5e1c301cc, type: 3}
       propertyPath: m_LocalRotation.w

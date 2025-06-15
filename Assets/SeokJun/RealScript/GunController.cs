@@ -7,7 +7,8 @@ public class GunController : MonoBehaviour
 {
     [Header("Shooting")]
     public Transform shootPoint; // 총구 위치
-    public float shootRange = 100f; // 총알이 날아가는 최대 거리
+    //public float shootRange = 100f; // 총알이 날아가는 최대 거리
+    public float shootDistance = 100f; // 사거리
     public LayerMask hitLayer; // 적만 맞게 LayerMask
 
     [Header("Fire Rete Settings")]
@@ -17,7 +18,7 @@ public class GunController : MonoBehaviour
 
     [Header("Ammo Settings")] //일케하면 Inspector에서 보기 편하게 바꿀수 있음
     public int maxAmmo = 30; //장탄수
-    private int currentAmmo; //현재 남은 장ㅌ난수
+    private int currentAmmo; //현재 남은 장탄수
     private Text ammoText; //UI 지정
     private bool canShoot = true; //발사 가능한지
 
@@ -26,9 +27,9 @@ public class GunController : MonoBehaviour
     private bool isReloading = false; //장전중인지 여부
     private Text reloadText; //장전 ui
 
-    [Header("Bullet Settings")]
-    public GameObject bulletPrefab; // 총알 연결하셈
-    public float bulletSpeed = 50f; //총알 속도
+    // [Header("Bullet Settings")]
+    // public GameObject bulletPrefab; // 총알 연결하셈
+    // public float bulletSpeed = 50f; //총알 속도
 
 
 
@@ -107,36 +108,47 @@ public class GunController : MonoBehaviour
 
         // Debug.Log($"[레이] 시작:{shootPoint.position} 방향:{shootPoint.forward} 레이어마스크:{hitLayer.value}");*/
 
-        /* //레이로 발사 할때때
-        // 레이 방향 시각화 (디버그 용)
-        Debug.DrawRay(shootPoint.position, shootPoint.forward * shootRange, Color.red, 1f);
-        Debug.Log("발사됨!");  // 확인용
+        //레이로 발사 할때때
+        Vector3 rayOrigin = shootPoint.position;
+        Vector3 rayDirection = shootPoint.forward;
 
-        Ray ray = new Ray(shootPoint.position, shootPoint.forward);
-        //모든 충돌체 검사
-        if (Physics.Raycast(ray, out RaycastHit hit, shootRange))
+        Ray ray = new Ray(rayOrigin, rayDirection);
+        if (Physics.Raycast(ray, out RaycastHit hit, shootDistance, hitLayer))
         {
-            Debug.Log("맞춘 대상: " + hit.collider.gameObject.name);
-            
-            // 맞춘 대상이 적 레이어인지 검사하고 적만 제거하기
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-                Destroy(hit.collider.gameObject);// 맞춘 오브젝트 제거
+            Debug.DrawRay(rayOrigin, rayDirection * shootDistance, Color.red, 0.5f);
+            Debug.Log($"Ray 충돌: {hit.collider.name} ({LayerMask.LayerToName(hit.collider.gameObject.layer)})");
+
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Object"))
+            {
+                Debug.Log("엄폐물에 맞음 → 적 무시");
+                // 맞긴 했지만 엄폐물이면 그냥 끝냄
+                return;
+            }
+            else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            {
+                Debug.Log("Enemy 맞춤 → 제거");
+                Transform rootEnemy = hit.collider.transform.root;
+                if (GameManager.Instance != null)
+                    GameManager.Instance?.NotifyEnemyKilled();
+                Destroy(rootEnemy.gameObject);
+            }
         }
         else
         {
-            Debug.Log("빗나감");
-        } */
-
-        GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
-        
-        // Bullet 스크립트에 속도 적용
-        Bullet bulletScript = bullet.GetComponent<Bullet>();
-        if (bulletScript != null)
-        {
-            bulletScript.speed = bulletSpeed;
+            Debug.Log("Ray 충돌 없음");
         }
 
-        
+        /*  // 불렛 오브젝트로
+        // GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
+
+        // // Bullet 스크립트에 속도 적용
+        // Bullet bulletScript = bullet.GetComponent<Bullet>();
+        // if (bulletScript != null)
+        // {
+        //     bulletScript.speed = bulletSpeed;
+        // }
+        */
+
 
         currentAmmo--;
         UpdateAmmoUI();

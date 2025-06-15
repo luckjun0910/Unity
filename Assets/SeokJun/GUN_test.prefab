@@ -41,7 +41,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 286675334516048205, guid: f337f68fed431244e98c8161d82439e8, type: 3}
       propertyPath: m_Name
-      value: GUN
+      value: GUN_test
       objectReference: {fileID: 0}
     - target: {fileID: 286675334516284781, guid: f337f68fed431244e98c8161d82439e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -112,10 +112,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootPoint: {fileID: 9209198579193527260}
-  shootRange: 100
+  shootDistance: 100
   hitLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 136
+  fireRate: 0.5
+  maxAmmo: 30
+  reloadDuration: 3
 --- !u!4 &8398728607711439193 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 286675334516284743, guid: f337f68fed431244e98c8161d82439e8, type: 3}

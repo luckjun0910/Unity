@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public float speed = 50f; // 총알 속도
+    public float lifeTime = 5f; // 자동 파괴 시간
 
-    public float speed = 50f;//총알속도
-    public float lifeTime = 5f;// 자동 파괴시간
-    // Start is called before the first frame update
     void Start()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-
         if (rb != null)
         {
             rb.velocity = transform.forward * speed;
@@ -20,38 +16,32 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, lifeTime); // 일정 시간 후 제거
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // transform.position += transform.forward * speed * Time.deltaTime;
-    }
-
-    //맞히면 죽이기
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"충돌: {other.gameObject.name}");
-        // 충돌한 오브젝트나 부모 중에서 EnemyController를 찾는다
-        EnemyController enemy = other.GetComponentInParent<EnemyController>();
+        Debug.Log($"충돌: {other.gameObject.name}, 레이어: {LayerMask.LayerToName(other.gameObject.layer)}");
 
-        // 못 찾으면 root 기준으로 강제 탐색
-        if (enemy == null)
+        // 엄폐물과 충돌 → 제거
+        if (other.gameObject.layer == LayerMask.NameToLayer("Object"))
         {
-            enemy = other.transform.root.GetComponent<EnemyController>();
-            Debug.LogWarning($"[Bullet] GetComponentInParent 실패, root 기준 InChildren 시도 → {(enemy != null ? "성공" : "실패")}");
+            Debug.Log("[Bullet] Object 레이어와 충돌 → 총알 제거");
+            Destroy(gameObject);
+            return;
         }
 
-
-        if (enemy != null)
+        // Enemy 레이어와 충돌 → 적 사망 처리
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Debug.Log("적 감지됨 -> 죽인다");
-            enemy.Die();
-            Destroy(gameObject); //총알 제거하는거임임
-        }
-        else
-        {
-            Debug.LogWarning($"[Bullet] EnemyController 못 찾음. 충돌 대상: {other.name}, Root: {other.transform.root.name}");;
+            Debug.Log("[Bullet] Enemy 레이어 감지 → 적 제거 처리");
+
+            // 적 오브젝트 제거
+            Destroy(other.gameObject);
+
+            // 총알도 제거
+            Destroy(gameObject);
+            return;
         }
 
-        
+        // 기타 충돌은 무시
+        Debug.Log("[Bullet] 처리 대상 아님 → 무시");
     }
 }

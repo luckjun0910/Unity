@@ -31,8 +31,14 @@ public class BuildTimer : MonoBehaviour
             AmmoText.gameObject.SetActive(false);
 
         //코루틴으로 타이머 시작
+        //StartCoroutine(BuildPhase());
+    }
+    
+    public void StartBuildPhase()
+    {
         StartCoroutine(BuildPhase());
     }
+
 
     IEnumerator BuildPhase()
     {

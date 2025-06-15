@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    // 카메라 앞에 위치할 거리 (1~2m 추천)
+    // 카메라 앞에 위치할 거리 (1~2m)
     public float distance = 2f;
 
     // 카메라와 UI의 높이(Y) 차이를 그대로 유지할지 여부
