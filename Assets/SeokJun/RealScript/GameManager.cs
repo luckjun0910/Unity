@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,13 @@ public class GameManager : MonoBehaviour
     private bool gameEnded = false; //승리/패배 중복 방지용
 
     public static GameManager Instance;
+
+    [Header("GameOver UI")]
+    // UI 연결
+    [SerializeField] private GameObject gameOverCanvas;
+    [SerializeField] private Text resultText;
+    [SerializeField] private Text timeText;
+    private float gameStartTime;
     // Start is called before the first frame update
 
     void Awake()
@@ -40,6 +48,15 @@ public class GameManager : MonoBehaviour
             Debug.Log("SpawnManager.cs 못찾음");
         }
 
+        //게임 시간 알기
+        gameStartTime = Time.time;
+
+        if (spawnManager != null)
+        {
+            maxEnemies = spawnManager.maxEnemies;
+            Debug.Log($"[GameManager] maxEnemies 설정됨: {maxEnemies}");
+        }
+
     }
 
     // EnemyController에서 적이 죽었을 때 호출됨
@@ -62,7 +79,7 @@ public class GameManager : MonoBehaviour
     public void NotifyEnemySurvived()
     {
         Debug.Log("[GameManager] NotifyEnemySurvived 호출됨");
-        
+
         if (!gameEnded)
         {
             GameOver();
@@ -79,6 +96,7 @@ public class GameManager : MonoBehaviour
     {
         gameEnded = true;
         Debug.Log("win");
+        ShowGameOverUI(true);
     }
 
     //패배 처리
@@ -86,14 +104,48 @@ public class GameManager : MonoBehaviour
     {
         gameEnded = true;
         Debug.Log("Lose");
+        ShowGameOverUI(false);
     }
 
     // 게임 재시작
     public void RestartGame()
     {
+        Time.timeScale = 1f; // 시간 되돌리기
+
         // 현재 씬을 다시 로드
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    
 
+    void ShowGameOverUI(bool win)
+    {
+        Time.timeScale = 0f; // 전체 게임 정지
+
+        if (gameOverCanvas != null)
+            gameOverCanvas.SetActive(true);
+
+        if (resultText != null)
+            resultText.text = win ? "승리 !!" : "패배...";
+
+        if (timeText != null)
+        {
+            float elapsed = Time.time - gameStartTime;
+            timeText.text = $"경과 시간: {elapsed:F1}초";
+        }
+
+        // 총 숨기기
+        GameObject gun = GameObject.FindWithTag("Gun");
+        if (gun != null) gun.SetActive(false);
+
+        // 탄약 UI 숨기기
+        GameObject ammoUI = GameObject.Find("AmmoText");
+        if (ammoUI != null) ammoUI.SetActive(false);
+    }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f; // 시간 되돌리기
+
+        SceneManager.LoadScene("StartScene"); // ← StartScene 이름에 맞게
+    }
+    
 }

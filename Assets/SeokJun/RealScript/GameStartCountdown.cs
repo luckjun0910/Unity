@@ -42,10 +42,10 @@ public class GameStartCountdown : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
-        countdownCanvas.SetActive(false);
-
         leftInteractor.interactionLayers = interactLayerBeforeStart;
         rightInteractor.interactionLayers = interactLayerBeforeStart;
+
+        countdownCanvas.SetActive(false);
 
         // 게임 시작 (BuildTimer 실행)
         BuildTimer buildTimer = FindObjectOfType<BuildTimer>();

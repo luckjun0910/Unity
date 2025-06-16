@@ -31,9 +31,6 @@ public class GunController : MonoBehaviour
     // public GameObject bulletPrefab; // 총알 연결하셈
     // public float bulletSpeed = 50f; //총알 속도
 
-
-
-
     void Awake()
     {
         var txtobj = GameObject.Find("AmmoText");
@@ -69,6 +66,8 @@ public class GunController : MonoBehaviour
         //탄약 초기화
         currentAmmo = maxAmmo;
         UpdateAmmoUI();
+
+        
     }
 
     private void Update()
@@ -98,7 +97,7 @@ public class GunController : MonoBehaviour
 
     public void Shoot()
     {
-        if (!canShoot || isReloading ||currentAmmo <=0) return;
+        if (!canShoot || isReloading || currentAmmo <= 0) return;
         /*
         // if (currentAmmo <= 0)
         // {
@@ -161,7 +160,7 @@ public class GunController : MonoBehaviour
         //재장전 시작시 장탄수 순기기
         if (ammoText != null)
             ammoText.gameObject.SetActive(false);
-        
+
 
         if (reloadText != null)
         {
@@ -184,8 +183,8 @@ public class GunController : MonoBehaviour
         //재장전이 끝나면 다시 장탄수 보이게
         if (ammoText != null)
             ammoText.gameObject.SetActive(true);
-        
-        
+
+
 
         if (reloadText != null)
             reloadText.gameObject.SetActive(false);
@@ -200,6 +199,8 @@ public class GunController : MonoBehaviour
         if (ammoText != null)
             ammoText.text = $"{currentAmmo} / {maxAmmo}";
     }
+
+    
     
     
 
