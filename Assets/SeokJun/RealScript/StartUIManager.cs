@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class StartUIManager : MonoBehaviour
 {
@@ -9,7 +10,14 @@ public class StartUIManager : MonoBehaviour
 
     public void OnStartButton()
     {
-        SceneManager.LoadScene("SampleScene"); 
+        //배경 음악 정지
+        GameObject bgm = GameObject.Find("StartBGM");
+        if (bgm != null)
+        {
+            AudioSource bgmAudio = bgm.GetComponent<AudioSource>();
+            if (bgmAudio != null) bgmAudio.Stop();
+        }
+        StartCoroutine(DelayedSceneStart());
     }
 
     public void OnHowToButton()
@@ -32,5 +40,11 @@ public class StartUIManager : MonoBehaviour
     public void OnClosePopup()
     {
         popupPanel.SetActive(false);
+    }
+
+    IEnumerator DelayedSceneStart()
+    {
+        yield return new WaitForSeconds(0.15f); // 클릭 소리 끝날 시간 확보
+        SceneManager.LoadScene("SampleScene");
     }
 }

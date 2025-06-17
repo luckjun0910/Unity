@@ -27,12 +27,19 @@ public class GunController : MonoBehaviour
     private bool isReloading = false; //장전중인지 여부
     private Text reloadText; //장전 ui
 
+    [Header("Audio")]
+    public AudioClip shootClip;
+    public AudioClip reloadClip;
+    private AudioSource audioSource;
+
     // [Header("Bullet Settings")]
     // public GameObject bulletPrefab; // 총알 연결하셈
     // public float bulletSpeed = 50f; //총알 속도
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         var txtobj = GameObject.Find("AmmoText");
         if (txtobj != null)
             ammoText = txtobj.GetComponent<Text>();
@@ -148,6 +155,9 @@ public class GunController : MonoBehaviour
         // }
         */
 
+        if (shootClip != null && audioSource != null)
+            audioSource.PlayOneShot(shootClip);
+
 
         currentAmmo--;
         UpdateAmmoUI();
@@ -188,6 +198,10 @@ public class GunController : MonoBehaviour
 
         if (reloadText != null)
             reloadText.gameObject.SetActive(false);
+            
+
+        if (reloadClip != null && audioSource != null)
+            audioSource.PlayOneShot(reloadClip);
 
 
         isReloading = false;
