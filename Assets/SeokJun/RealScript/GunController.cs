@@ -70,6 +70,15 @@ public class GunController : MonoBehaviour
 
     private void Start()
     {
+        switch (StartUIManager.selectedDifficulty)
+        {
+            case StartUIManager.Difficulty.Easy: maxAmmo = 30; break;
+            case StartUIManager.Difficulty.Normal: maxAmmo = 20; break;
+            case StartUIManager.Difficulty.Hard: maxAmmo = 10; break;
+        }
+
+        Debug.Log($"[GunController] 난이도 설정 maxAmmo: {maxAmmo}");
+
         //탄약 초기화
         currentAmmo = maxAmmo;
         UpdateAmmoUI();

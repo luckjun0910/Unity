@@ -43,6 +43,14 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
+        switch (StartUIManager.selectedDifficulty)
+        {
+            case StartUIManager.Difficulty.Easy: maxEnemies = 10; break;
+            case StartUIManager.Difficulty.Normal: maxEnemies = 15; break;
+            case StartUIManager.Difficulty.Hard: maxEnemies = 20; break;
+        }
+
+        Debug.Log($"[SpawnManager] 난이도 설정 maxEnemies: {maxEnemies}");
         StartCoroutine(SpawnEnemies());
     }
 

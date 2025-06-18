@@ -6113,7 +6113,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.36
+      value: -21.42
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6121,23 +6121,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.47
+      value: -4.86
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99791014
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.064617425
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6145,7 +6145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 7.41
       objectReference: {fileID: 0}
     - target: {fileID: 4000012940855660, guid: 6f6ec48692abf8540aed383cead176dc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

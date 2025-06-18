@@ -7,17 +7,15 @@ public class StartUIManager : MonoBehaviour
 {
     public GameObject popupPanel;
     public Text popupText;
+    public GameObject quitPanel;
+    public enum Difficulty { Easy, Normal, Hard }
+    public static Difficulty selectedDifficulty = Difficulty.Normal;
+    public GameObject difficultyPanel;
+
 
     public void OnStartButton()
     {
-        //배경 음악 정지
-        GameObject bgm = GameObject.Find("StartBGM");
-        if (bgm != null)
-        {
-            AudioSource bgmAudio = bgm.GetComponent<AudioSource>();
-            if (bgmAudio != null) bgmAudio.Stop();
-        }
-        StartCoroutine(DelayedSceneStart());
+        difficultyPanel.SetActive(true);
     }
 
     public void OnHowToButton()
@@ -34,7 +32,7 @@ public class StartUIManager : MonoBehaviour
 
     public void OnQuitButton()
     {
-        Application.Quit();
+        quitPanel.SetActive(true);
     }
 
     public void OnClosePopup()
@@ -42,8 +40,29 @@ public class StartUIManager : MonoBehaviour
         popupPanel.SetActive(false);
     }
 
+    public void OnQuitYes()
+    {
+        Application.Quit(); // 종료
+    }
+
+    public void OnQuitNo()
+    {
+        quitPanel.SetActive(false); // 창 닫기
+    }
+    public void SelectEasy() { selectedDifficulty = Difficulty.Easy; StartCoroutine(DelayedSceneStart()); }
+    public void SelectNormal() { selectedDifficulty = Difficulty.Normal; StartCoroutine(DelayedSceneStart()); }
+    public void SelectHard() { selectedDifficulty = Difficulty.Hard; StartCoroutine(DelayedSceneStart()); }
+
+
     IEnumerator DelayedSceneStart()
     {
+        //배경 음악 정지
+        GameObject bgm = GameObject.Find("StartBGM");
+        if (bgm != null)
+        {
+            AudioSource bgmAudio = bgm.GetComponent<AudioSource>();
+            if (bgmAudio != null) bgmAudio.Stop();
+        }
         yield return new WaitForSeconds(0.15f); // 클릭 소리 끝날 시간 확보
         SceneManager.LoadScene("SampleScene");
     }

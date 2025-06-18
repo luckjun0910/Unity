@@ -141,12 +141,19 @@ public class BuildTimer : MonoBehaviour
 
         // 적 스폰 시작
         FindObjectOfType<SpawnManager>().StartSpawning();
-        
+
         if (GameManager.Instance != null && GameManager.Instance.enemyCountText != null)
         {
             GameManager.Instance.enemyCountText.gameObject.SetActive(true);
             GameManager.Instance.SendMessage("UpdateEnemyUI");
         }
+        
+        SpawnManager sm = FindObjectOfType<SpawnManager>();
+        if (sm != null && GameManager.Instance != null)
+        {
+            GameManager.Instance.SetMaxEnemies(sm.maxEnemies);
+        }
+
 
         /*
         // 손 Transform 찾기 (이름 정확히 확인해라;; 띄어쓰기 조심)

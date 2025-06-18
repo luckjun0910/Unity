@@ -167,3 +167,34 @@ Unity 프로젝트를 Git으로 관리하며, `.gitignore`를 활용해 불필�
   - 다른 사람이 작업 후 `push`를 했으면, 내 PC에서 반드시 `git pull` 후 새로 작업하기  
 
 ---
+
+## 빌드과정 및 APK
+
+- **Unity Android 환경 설정**
+  - Player Settings 확인
+    - Other Settings
+      - Scripting Backend: IL2CPP
+      - Target Architectures: ARM64 체크
+      - Minimum API Level: Android 7.0 (API 24) 이상
+    - Publishing Settings (릴리스 시):
+      - Keystore 필요하면 생성
+- **ADB 설치 및 설정**
+ - Platform Tools 다운:
+    - [ADB](ohttps://developer.android.com/studio/releases/platform-tools)
+    - 압축풀고 경로 복사
+ - 환경변수 등록
+    - 시스템 환경 변수 편집 -> 환경변수 -> Path -> 위의 다운받고 압축 푼 경로
+ - ADB확인
+    ```bash
+    adb version
+    adb devices
+    ```
+- **빌드 설정**
+  - File > Build Settings
+    - Platform: Android 선택 -> Switch Platform
+    - Scenes In Build: 내가만든 씬 확인
+    - Compression Method: LZ4HC
+- **ADB로 APK 설치**
+  ```bash
+  adb install -r "C:\경로\name.apk"
+  ```

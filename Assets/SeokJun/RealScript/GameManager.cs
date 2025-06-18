@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // EnemyController에서 적이 죽었을 때 호출됨
+    // EnemyController에서 적이 죽었을 때 호출됨s
     public void NotifyEnemyKilled()
     {
         // 이미 게임이 끝났다면 무시
@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene("StartScene"); // ← StartScene 이름에 맞게
     }
-    
+
     void UpdateEnemyUI()
     {
         if (enemyCountText != null)
@@ -179,6 +179,13 @@ public class GameManager : MonoBehaviour
             int remaining = maxEnemies - killedEnemies;
             enemyCountText.text = $"{maxEnemies} / {remaining}";
         }
+    }
+
+    public void SetMaxEnemies(int count)
+    {
+        maxEnemies = count;
+        UpdateEnemyUI();
+        
     }
     
 }
