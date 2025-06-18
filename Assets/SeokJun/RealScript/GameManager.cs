@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,16 +16,17 @@ public class GameManager : MonoBehaviour
 
     [Header("GameOver UI")]
     // UI 연결
-    [SerializeField] private Text enemyCountText;
     [SerializeField] private GameObject gameOverCanvas;
     [SerializeField] private Text resultText;
     [SerializeField] private Text timeText;
-    
+    public Text enemyCountText;
+
     [Header("Sound")]
     [SerializeField] private AudioClip winClip;
     [SerializeField] private AudioClip loseClip;
 
     private AudioSource audioSource;
+
 
 
     void Awake()
@@ -43,7 +45,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        UpdateEnemyUI();
         audioSource = GetComponent<AudioSource>();
 
         //SpawnManager.cs 찾아서 최대 적 수 가져옴
@@ -63,6 +64,9 @@ public class GameManager : MonoBehaviour
             maxEnemies = spawnManager.maxEnemies;
             Debug.Log($"[GameManager] maxEnemies 설정됨: {maxEnemies}");
         }
+
+        if (enemyCountText != null)
+            enemyCountText.gameObject.SetActive(false);
 
     }
 
@@ -149,6 +153,9 @@ public class GameManager : MonoBehaviour
             timeText.text = $"전투 시간: {elapsed:F1}초";
         }
 
+        if (enemyCountText != null)
+            enemyCountText.gameObject.SetActive(false);
+
         // 총 숨기기
         GameObject gun = GameObject.FindWithTag("Gun");
         if (gun != null) gun.SetActive(false);
@@ -164,15 +171,14 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene("StartScene"); // ← StartScene 이름에 맞게
     }
-
+    
     void UpdateEnemyUI()
     {
         if (enemyCountText != null)
         {
             int remaining = maxEnemies - killedEnemies;
-            enemyCountText.text = $"남은 적 : {maxEnemies} / {remaining}";
+            enemyCountText.text = $"{maxEnemies} / {remaining}";
         }
     }
-
     
 }

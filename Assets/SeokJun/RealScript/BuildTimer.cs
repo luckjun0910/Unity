@@ -30,6 +30,9 @@ public class BuildTimer : MonoBehaviour
         if (AmmoText != null)
             AmmoText.gameObject.SetActive(false);
 
+        if (GameManager.Instance != null && GameManager.Instance.enemyCountText != null)
+            GameManager.Instance.enemyCountText.gameObject.SetActive(false);
+
         //코루틴으로 타이머 시작
         //StartCoroutine(BuildPhase());
     }
@@ -40,6 +43,7 @@ public class BuildTimer : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.gameStartTime = Time.time;
+
         }
     }
 
@@ -98,14 +102,16 @@ public class BuildTimer : MonoBehaviour
 
         if (AmmoText != null)
             AmmoText.gameObject.SetActive(true);
-        
+
+        if (GameManager.Instance != null && GameManager.Instance.enemyCountText != null)
+            GameManager.Instance.enemyCountText.gameObject.SetActive(true);
+
+
         if (leftRayInteractor != null)
         {
             leftRayInteractor.SetActive(false);
             Debug.Log("왼손 Ray Interactor 비활성화 완료");
         }
-
-
 
         // 총을 손에 생성
         Transform hand = GameObject.Find("Right Controller/Attach").transform;
@@ -130,8 +136,18 @@ public class BuildTimer : MonoBehaviour
         rb = gunInstance.GetComponent<Rigidbody>();
         if (rb != null) rb.isKinematic = true;
 
+
+
+
         // 적 스폰 시작
         FindObjectOfType<SpawnManager>().StartSpawning();
+        
+        if (GameManager.Instance != null && GameManager.Instance.enemyCountText != null)
+        {
+            GameManager.Instance.enemyCountText.gameObject.SetActive(true);
+            GameManager.Instance.SendMessage("UpdateEnemyUI");
+        }
+
         /*
         // 손 Transform 찾기 (이름 정확히 확인해라;; 띄어쓰기 조심)
         Transform hand = GameObject.Find("Right Controller").transform;
