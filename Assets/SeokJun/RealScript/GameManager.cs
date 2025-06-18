@@ -11,14 +11,21 @@ public class GameManager : MonoBehaviour
     private bool gameEnded = false; //승리/패배 중복 방지용
 
     public static GameManager Instance;
+    public float gameStartTime;
 
     [Header("GameOver UI")]
     // UI 연결
+    [SerializeField] private Text enemyCountText;
     [SerializeField] private GameObject gameOverCanvas;
     [SerializeField] private Text resultText;
     [SerializeField] private Text timeText;
-    private float gameStartTime;
-    // Start is called before the first frame update
+    
+    [Header("Sound")]
+    [SerializeField] private AudioClip winClip;
+    [SerializeField] private AudioClip loseClip;
+
+    private AudioSource audioSource;
+
 
     void Awake()
     {
@@ -36,6 +43,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        UpdateEnemyUI();
+        audioSource = GetComponent<AudioSource>();
+
         //SpawnManager.cs 찾아서 최대 적 수 가져옴
         SpawnManager spawnManager = FindObjectOfType<SpawnManager>();
         if (spawnManager != null)
@@ -47,9 +57,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("SpawnManager.cs 못찾음");
         }
-
-        //게임 시간 알기
-        gameStartTime = Time.time;
 
         if (spawnManager != null)
         {
@@ -67,6 +74,8 @@ public class GameManager : MonoBehaviour
 
         killedEnemies++; // 적 처치 수 증가
         Debug.Log($"적 처치됨: {killedEnemies}/{maxEnemies}");
+
+        UpdateEnemyUI();
 
         // 승리 조건: 모든 적을 처치했을 경우
         if (killedEnemies >= maxEnemies)
@@ -97,6 +106,10 @@ public class GameManager : MonoBehaviour
         gameEnded = true;
         Debug.Log("win");
         ShowGameOverUI(true);
+        if (audioSource != null && winClip != null)
+        {
+            audioSource.PlayOneShot(winClip);
+        }
     }
 
     //패배 처리
@@ -105,6 +118,10 @@ public class GameManager : MonoBehaviour
         gameEnded = true;
         Debug.Log("Lose");
         ShowGameOverUI(false);
+        if (audioSource != null && loseClip != null)
+        {
+            audioSource.PlayOneShot(loseClip);
+        }
     }
 
     // 게임 재시작
@@ -128,8 +145,8 @@ public class GameManager : MonoBehaviour
 
         if (timeText != null)
         {
-            float elapsed = Time.time - gameStartTime;
-            timeText.text = $"경과 시간: {elapsed:F1}초";
+            float elapsed = Time.time - GameManager.Instance.gameStartTime;
+            timeText.text = $"전투 시간: {elapsed:F1}초";
         }
 
         // 총 숨기기
@@ -147,5 +164,15 @@ public class GameManager : MonoBehaviour
 
         SceneManager.LoadScene("StartScene"); // ← StartScene 이름에 맞게
     }
+
+    void UpdateEnemyUI()
+    {
+        if (enemyCountText != null)
+        {
+            int remaining = maxEnemies - killedEnemies;
+            enemyCountText.text = $"남은 적 : {maxEnemies} / {remaining}";
+        }
+    }
+
     
 }

@@ -33,10 +33,14 @@ public class BuildTimer : MonoBehaviour
         //코루틴으로 타이머 시작
         //StartCoroutine(BuildPhase());
     }
-    
+
     public void StartBuildPhase()
     {
         StartCoroutine(BuildPhase());
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.gameStartTime = Time.time;
+        }
     }
 
 

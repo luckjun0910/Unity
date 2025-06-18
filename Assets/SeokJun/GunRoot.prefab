@@ -52,7 +52,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 136
   fireRate: 0.5
-  maxAmmo: 30
+  maxAmmo: 20
   reloadDuration: 3
   shootClip: {fileID: 8300000, guid: 2e8b4317f9013534480bae960398baf7, type: 3}
   reloadClip: {fileID: 8300000, guid: 74ca306f1fa260c478ec3adc8433d1f1, type: 3}
